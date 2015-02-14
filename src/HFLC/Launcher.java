@@ -1,4 +1,4 @@
-package NHFLC;
+package HFLC;
 
 /**
  * Non-singleton Hierarchical Fuzzy Logic Controller

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="/Juzzy/bin/generalType2zSlices"/>
+	<classpathentry kind="lib" path="/Juzzy/bin/generic"/>
+	<classpathentry kind="lib" path="/Juzzy/bin/intervalType2"/>
+	<classpathentry kind="lib" path="/Juzzy/bin/similarity"/>
+	<classpathentry kind="lib" path="/Juzzy/bin/tools"/>
+	<classpathentry kind="lib" path="/Juzzy/bin/type1"/>
+	<classpathentry kind="lib" path="/Juzzy/src/generalType2zSlices"/>
+	<classpathentry kind="lib" path="/Juzzy/src/generic"/>
+	<classpathentry kind="lib" path="/Juzzy/src/intervalType2"/>
+	<classpathentry kind="lib" path="/Juzzy/src/similarity"/>
+	<classpathentry kind="lib" path="/Juzzy/src/tools"/>
+	<classpathentry kind="lib" path="/Juzzy/src/type1"/>
+	<classpathentry kind="lib" path="C:/Users/Vaidas/workspace/Juzzy/src/jmathplot.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

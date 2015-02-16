@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import HFLC.NHFLC;
+import HFLC.SHFLC;
 
 /**
  * SHFLC_test
@@ -18,7 +18,7 @@ public class SHFLC_test {
 
 	@Test
 	public void test() {
-		NHFLC controller = new NHFLC();
+		SHFLC controller = new SHFLC();
 		assertNotNull(controller);
 	}
 

@@ -4,8 +4,12 @@ import intervalType2.sets.IntervalT2MF_Interface;
 import intervalType2.sets.IntervalT2MF_Trapezoidal;
 import intervalType2.system.IT2_Antecedent;
 import intervalType2.system.IT2_Consequent;
+import intervalType2.system.IT2_Rule;
+import intervalType2.system.IT2_Rulebase;
 import tools.JMathPlotter;
 import type1.sets.T1MF_Trapezoidal;
+import type1.system.T1_Antecedent;
+import type1.system.T1_Rule;
 import generic.Input;
 import generic.Output;
 import generic.Tuple;
@@ -22,7 +26,8 @@ import generic.Tuple;
 public class SHFLC {
 
 	//Sonar sensor input
-	Input sonarInput;
+	Input frontInput;
+	Input backInput;
 	
 	//Output
 	Output direction;
@@ -38,8 +43,10 @@ public class SHFLC {
     IntervalT2MF_Trapezoidal farMF;
     
     //Wall follow antecedents
-    IT2_Antecedent close;
-    IT2_Antecedent far;
+    IT2_Antecedent closeFront;
+    IT2_Antecedent farFront;
+    IT2_Antecedent closeBack;
+    IT2_Antecedent farBack;
     
     //Output membership function - turn left.
     T1MF_Trapezoidal leftLowerMF;
@@ -61,14 +68,19 @@ public class SHFLC {
     IT2_Consequent straight;
     IT2_Consequent right;
     
+    //Rulebases
+    IT2_Rulebase leftWallRulebase;
+    IT2_Rulebase rightWallRulebase;
+    
 	/**
 	 * SHFLC Constructor. Creates the Singleton system 
 	 * 
 	 */
 	public SHFLC() {
 		
-		//Sonar sensor input. Definition
-        sonarInput = new Input("Sonar", new Tuple(0,100));
+		//Sonar sensor input for wall following. Definition
+        frontInput = new Input("Sonar", new Tuple(0,100));
+        backInput = new Input("Sonar", new Tuple(0,100));
         
         //Output definition
         direction = new Output("Direction", new Tuple(-90,90));
@@ -84,8 +96,10 @@ public class SHFLC {
         farMF = new IntervalT2MF_Trapezoidal("IT2MF Far",farUpperMF,farLowerMF);
         
         //Wall follow antecedents. Definition
-        close = new IT2_Antecedent("Close", closeMF, sonarInput);
-        far = new IT2_Antecedent("Far", farMF, sonarInput);
+        closeFront = new IT2_Antecedent("Close Front", closeMF, frontInput);
+        farFront = new IT2_Antecedent("Far Front", farMF, frontInput);
+        closeBack = new IT2_Antecedent("Close Back", closeMF, backInput);
+        farBack = new IT2_Antecedent("Far Back", farMF, backInput);
         
         //Output membership function - turn left. Definition
         leftLowerMF= new T1MF_Trapezoidal("Lower MF Left",new double[]{-72.0, -36.0, -36.0, 0.0});
@@ -107,7 +121,7 @@ public class SHFLC {
         straight = new IT2_Consequent("Straight", straightMF, direction);
         right = new IT2_Consequent("Right", rightMF, direction);
         
-		createLeftWallFollow();
+		createLeftWallRulebase();
 	}
 	
 	/**
@@ -116,12 +130,20 @@ public class SHFLC {
 	 * Creates the wall following fuzzy inference system. Whether right or left
 	 * wall will be determined by the input to the rule base
 	 */
-	private void createLeftWallFollow() {
+	private void createLeftWallRulebase() {
 		
+		leftWallRulebase = new IT2_Rulebase(4);
+        leftWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeFront, closeBack}, straight));
+        leftWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeFront, farBack}, right));
+        leftWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farFront, closeBack}, left));
+        leftWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farFront, farBack}, straight));
+        
 		//helper. remove when done as will slow down runtime.
         plotMFs("whatever",new IntervalT2MF_Interface[]{closeMF, farMF},100);
         plotMFs("whatever",new IntervalT2MF_Interface[]{straightMF, rightMF, leftMF},100);
 	}
+	
+	
 	
 	//helper. Copied from Juzzy. Remove when done
     private void plotMFs(String name, IntervalT2MF_Interface[] sets, int discretizationLevel)

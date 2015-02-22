@@ -21,5 +21,4 @@ public class SHFLC_test {
 		SHFLC controller = new SHFLC();
 		assertNotNull(controller);
 	}
-
 }

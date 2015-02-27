@@ -33,7 +33,8 @@ public class SHFLC {
 	Input obstacleRight;
 	
 	//Output
-	Output direction;
+	Output leftWheelVelocity;
+	Output rightWheelVelocity;
 	
 	//Obstacle avoidance membership function - close
     T1MF_Trapezoidal obstacleCloseLowerMF;
@@ -69,25 +70,28 @@ public class SHFLC {
     IT2_Antecedent closeBack;
     IT2_Antecedent farBack;
     
-    //Output membership function - turn left.
-    T1MF_Trapezoidal leftLowerMF;
-    T1MF_Trapezoidal leftUpperMF;
-    IntervalT2MF_Trapezoidal leftMF;
+    //Output membership function - low.
+    T1MF_Trapezoidal lowLowerMF;
+    T1MF_Trapezoidal lowUpperMF;
+    IntervalT2MF_Trapezoidal lowMF;
     
-    //Output membership function - straight.
-    T1MF_Trapezoidal straightLowerMF;
-    T1MF_Trapezoidal straightUpperMF;
-    IntervalT2MF_Trapezoidal straightMF;
+    //Output membership function - medium.
+    T1MF_Trapezoidal mediumLowerMF;
+    T1MF_Trapezoidal mediumUpperMF;
+    IntervalT2MF_Trapezoidal mediumMF;
     
-    //Output membership function - turn right.
-    T1MF_Trapezoidal rightLowerMF;
-    T1MF_Trapezoidal rightUpperMF;
-    IntervalT2MF_Trapezoidal rightMF;
+    //Output membership function - high.
+    T1MF_Trapezoidal highLowerMF;
+    T1MF_Trapezoidal highUpperMF;
+    IntervalT2MF_Trapezoidal highMF;
 	
     //Consequents
-    IT2_Consequent left;
-    IT2_Consequent straight;
-    IT2_Consequent right;
+    IT2_Consequent leftWheelLow;
+    IT2_Consequent leftWheelMedium;
+    IT2_Consequent leftWheelHigh;
+    IT2_Consequent rightWheelLow;
+    IT2_Consequent rightWheelMedium;
+    IT2_Consequent rightWheelHigh;
     
     //Rulebases
     IT2_Rulebase leftWallRulebase;
@@ -110,7 +114,8 @@ public class SHFLC {
         obstacleRight = new Input("Right sonar", new Tuple(0,200));
         
         //Output definition
-        direction = new Output("Direction", new Tuple(-90,90));
+        leftWheelVelocity = new Output("Left Wheel Velocity", new Tuple(-100, 400));
+        rightWheelVelocity = new Output("Right Wheel Velocity", new Tuple(-100, 400));
         
         
         //Obstacle avoidance membership function - close. Definition
@@ -149,29 +154,35 @@ public class SHFLC {
         closeBack = new IT2_Antecedent("Close Back", wallCloseMF, backInput);
         farBack = new IT2_Antecedent("Far Back", wallFarMF, backInput);
         
-        //Output membership function - turn left. Definition
-        leftLowerMF= new T1MF_Trapezoidal("Lower MF Left",new double[]{-72.0, -36.0, -36.0, 0.0});
-        leftUpperMF= new T1MF_Trapezoidal("Upper MF Left",new double[]{-90.0, -54.0, -18.0, 18.0});
-        leftMF = new IntervalT2MF_Trapezoidal("IT2MF Left",leftUpperMF,leftLowerMF);
+        //Output membership function - low. Definition
+        lowLowerMF= new T1MF_Trapezoidal("Lower MF Low",new double[]{0.0, 50.0, 50.0, 100.0});
+        lowUpperMF= new T1MF_Trapezoidal("Upper MF Low",new double[]{-100.0, 0.0, 100.0, 200.0});
+        lowMF = new IntervalT2MF_Trapezoidal("IT2MF Low",lowUpperMF,lowLowerMF);
         
-        //Output membership function - straight. Definition
-        straightLowerMF= new T1MF_Trapezoidal("Lower MF Straight",new double[]{-36.0, 0.0, 0.0, 36.0});
-        straightUpperMF= new T1MF_Trapezoidal("Upper MF Straight",new double[]{-54.0, -18.0, 18.0, 54.0});
-        straightMF = new IntervalT2MF_Trapezoidal("IT2MF Straight", straightUpperMF, straightLowerMF);
+        //Output membership function - medium. Definition
+        mediumLowerMF= new T1MF_Trapezoidal("Lower MF Medium",new double[]{100.0, 150.0, 150.0, 200.0});
+        mediumUpperMF= new T1MF_Trapezoidal("Upper MF Medium",new double[]{0.0, 100.0, 200.0, 300.0});
+        mediumMF = new IntervalT2MF_Trapezoidal("IT2MF Medium", mediumUpperMF, mediumLowerMF);
         
-        //Output membership function - turn Right. Definition
-        rightLowerMF= new T1MF_Trapezoidal("Lower MF Right",new double[]{0.0, 36.0, 36.0, 72.0});
-        rightUpperMF= new T1MF_Trapezoidal("Upper MF Right",new double[]{-18.0, 18.0, 54.0, 90.0});
-        rightMF = new IntervalT2MF_Trapezoidal("IT2MF Right", rightUpperMF, rightLowerMF);
+        //Output membership function - high. Definition
+        highLowerMF= new T1MF_Trapezoidal("Lower MF High",new double[]{200.0, 250.0, 250.0, 300.0});
+        highUpperMF= new T1MF_Trapezoidal("Upper MF High",new double[]{100.0, 200.0, 300.0, 400.0});
+        highMF = new IntervalT2MF_Trapezoidal("IT2MF High", highUpperMF, highLowerMF);
         
         //Consequent definition
-        left = new IT2_Consequent("Left", leftMF, direction);
-        straight = new IT2_Consequent("Straight", straightMF, direction);
-        right = new IT2_Consequent("Right", rightMF, direction);
+        leftWheelLow = new IT2_Consequent("Low", lowMF, leftWheelVelocity);
+        leftWheelMedium = new IT2_Consequent("Medium", mediumMF, leftWheelVelocity);
+        leftWheelHigh = new IT2_Consequent("High", highMF, leftWheelVelocity);
+        rightWheelLow = new IT2_Consequent("Low", lowMF, rightWheelVelocity);
+        rightWheelMedium = new IT2_Consequent("Medium", mediumMF, rightWheelVelocity);
+        rightWheelHigh = new IT2_Consequent("High", highMF, rightWheelVelocity);
         
 		createLeftWallRulebase();
 		createRightWallRulebase();
 		createObstacleRulebase();
+        plotControlSurface(leftWheelVelocity, false, 100, 100);   //use COS type reduction
+        plotControlSurface(rightWheelVelocity, true, 100, 100);  //use centroid type reduction
+        
 	}
 	
 	/**
@@ -182,14 +193,15 @@ public class SHFLC {
 	private void createLeftWallRulebase() {
 		
 		leftWallRulebase = new IT2_Rulebase(4);
-        leftWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeFront, closeBack}, straight));
-        leftWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeFront, farBack}, right));
-        leftWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farFront, closeBack}, left));
-        leftWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farFront, farBack}, straight));
+        leftWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeFront, closeBack}, new IT2_Consequent[]{leftWheelMedium, rightWheelMedium}));
+        leftWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeFront, farBack}, new IT2_Consequent[]{leftWheelHigh, rightWheelLow}));
+        leftWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farFront, closeBack}, new IT2_Consequent[]{leftWheelLow, rightWheelHigh}));
+        leftWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farFront, farBack}, new IT2_Consequent[]{leftWheelHigh, rightWheelHigh}));
         
 		//helper. remove when done as will slow down runtime.
-        plotMFs("whatever",new IntervalT2MF_Interface[]{obstacleCloseMF, obstacleFarMF},100);
+        plotMFs("whatever",new IntervalT2MF_Interface[]{lowMF, mediumMF, highMF},100);
         //plotMFs("whatever",new IntervalT2MF_Interface[]{straightMF, rightMF, leftMF},100);
+        
 	}
 	
 	/**
@@ -200,10 +212,10 @@ public class SHFLC {
 	private void createRightWallRulebase() {
 		
 		rightWallRulebase = new IT2_Rulebase(4);
-        rightWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeFront, closeBack}, straight));
-        rightWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeFront, farBack}, left));
-        rightWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farFront, closeBack}, right));
-        rightWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farFront, farBack}, straight));
+        rightWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeFront, closeBack}, new IT2_Consequent[]{leftWheelMedium, rightWheelMedium}));
+        rightWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeFront, farBack}, new IT2_Consequent[]{leftWheelLow, rightWheelHigh}));
+        rightWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farFront, closeBack}, new IT2_Consequent[]{leftWheelHigh, rightWheelLow}));
+        rightWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farFront, farBack}, new IT2_Consequent[]{leftWheelHigh, rightWheelHigh}));
 	}
 	
 	/**
@@ -214,14 +226,14 @@ public class SHFLC {
 	private void createObstacleRulebase() {
 		//change outputs
 		obstacleRulebase = new IT2_Rulebase(8);
-		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, closeMiddle, closeRight}, straight));
-		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, closeMiddle, farRight}, straight));
-		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, farMiddle, closeRight}, straight));
-		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, farMiddle, farRight}, straight));
-		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, closeMiddle, closeRight}, straight));
-		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, closeMiddle, farRight}, straight));
-		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, farMiddle, closeRight}, straight));
-		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, farMiddle, farRight}, straight));
+		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, closeMiddle, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelLow}));
+		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, closeMiddle, farRight}, new IT2_Consequent[]{leftWheelMedium, rightWheelLow}));
+		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, farMiddle, closeRight}, new IT2_Consequent[]{leftWheelMedium, rightWheelMedium}));
+		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, farMiddle, farRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelLow}));
+		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, closeMiddle, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelMedium}));
+		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, closeMiddle, farRight}, new IT2_Consequent[]{leftWheelLow, rightWheelLow}));
+		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, farMiddle, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelMedium}));
+		obstacleRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, farMiddle, farRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelHigh}));
 	}
 	
 	
@@ -237,5 +249,51 @@ public class SHFLC {
             plotter.plotMF(sets[i].getName(), sets[i], discretizationLevel, null, false);
         }
         plotter.show(name);
+    }
+    
+  //helper. Copied from Juzzy. Remove when done
+    private void plotControlSurface(Output o, boolean useCentroidDefuzzification, int input1Discs, int input2Discs)
+    {
+        double output;
+        double[] x = new double[input1Discs];
+        double[] y = new double[input2Discs];
+        double[][] z = new double[y.length][x.length];
+        double incrX, incrY;
+        incrX = frontInput.getDomain().getSize()/(input1Discs-1.0);
+        incrY = backInput.getDomain().getSize()/(input2Discs-1.0);
+
+        //first, get the values
+        for(int currentX=0; currentX<input1Discs; currentX++)
+        {
+            x[currentX] = currentX * incrX;        
+        }
+        for(int currentY=0; currentY<input2Discs; currentY++)
+        {
+            y[currentY] = currentY * incrY;
+        }
+        
+        for(int currentX=0; currentX<input1Discs; currentX++)
+        {
+        	frontInput.setInput(x[currentX]);
+            for(int currentY=0; currentY<input2Discs; currentY++)
+            {//System.out.println("Current x = "+currentX+"  current y = "+currentY);
+            	backInput.setInput(y[currentY]);
+                if(useCentroidDefuzzification)
+                {
+                    output = leftWallRulebase.evaluate(1).get(o);
+                }
+                else
+                {
+                    output = leftWallRulebase.evaluate(0).get(o);
+                }
+                z[currentY][currentX] = output;
+            }    
+        }
+        
+        //now do the plotting
+        JMathPlotter plotter = new JMathPlotter();
+        plotter.plotControlSurface("Control Surface",
+                new String[]{frontInput.getName(), backInput.getName(), "Tip"}, x, y, z, o.getDomain(), true); 
+        plotter.show("Interval Type-2 Fuzzy Logic System Control Surface for "+o.getName());
     }
 }

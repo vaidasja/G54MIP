@@ -1,4 +1,4 @@
-package HFLC;
+package HFLC.NHFLC;
 
 /**
  * Non-Singleton HFLC

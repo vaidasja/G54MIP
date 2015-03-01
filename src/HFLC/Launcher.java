@@ -1,5 +1,7 @@
 package HFLC;
 
+import HFLC.SHFLC.SHFLC;
+
 /**
  * Non-singleton Hierarchical Fuzzy Logic Controller
  * 

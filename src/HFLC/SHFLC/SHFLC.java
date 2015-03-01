@@ -1,4 +1,4 @@
-package HFLC;
+package HFLC.SHFLC;
 
 import intervalType2.sets.IntervalT2MF_Interface;
 import intervalType2.sets.IntervalT2MF_Trapezoidal;
@@ -23,6 +23,11 @@ import generic.Tuple;
 
 public class SHFLC {
 
+	//Context of activation inputs
+	Input leftWallContext;
+	Input rightWallContext;
+	Input obstacleContext;
+	
 	//Sonar sensor input for wall following
 	Input frontInput;
 	Input backInput;
@@ -35,6 +40,20 @@ public class SHFLC {
 	//Output
 	Output leftWheelVelocity;
 	Output rightWheelVelocity;
+	
+	//Context of activation membership functions
+	T1MF_Trapezoidal obstacleLowerMF;
+	T1MF_Trapezoidal obstacleUpperMF;
+	IntervalT2MF_Trapezoidal obstacleMF;
+	
+	T1MF_Trapezoidal leftWallLowerMF;
+	T1MF_Trapezoidal leftWallUpperMF;
+	IntervalT2MF_Trapezoidal leftWallMF;
+	
+	T1MF_Trapezoidal rightWallLowerMF;
+	T1MF_Trapezoidal rightWallUpperMF;
+	IntervalT2MF_Trapezoidal rightWallMF;
+	
 	
 	//Obstacle avoidance membership function - close
     T1MF_Trapezoidal obstacleCloseLowerMF;
@@ -55,6 +74,11 @@ public class SHFLC {
     T1MF_Trapezoidal wallFarUpperMF;
     T1MF_Trapezoidal wallFarLowerMF;
     IntervalT2MF_Trapezoidal wallFarMF;
+    
+    //Context of activation antecedents
+    IT2_Antecedent obstacleLow;
+    IT2_Antecedent leftWallLow;
+    IT2_Antecedent rightWallLow;
     
     //Obstacle avoidance antecedents
     IT2_Antecedent closeLeft;
@@ -104,6 +128,11 @@ public class SHFLC {
 	 */
 	public SHFLC() {
 		
+		//Context of activation inputs. Definition
+		leftWallContext = new Input("Left wall following", new Tuple(0,100));
+		rightWallContext = new Input("Right wall following", new Tuple(0,100));
+		obstacleContext = new Input("Obstacle avoidance", new Tuple(0,100));
+		
 		//Sonar sensor input for wall following. Definition
         frontInput = new Input("Front sonar", new Tuple(0,100));
         backInput = new Input("Back sonar", new Tuple(0,100));
@@ -117,6 +146,19 @@ public class SHFLC {
         leftWheelVelocity = new Output("Left Wheel Velocity", new Tuple(-100, 400));
         rightWheelVelocity = new Output("Right Wheel Velocity", new Tuple(-100, 400));
         
+        
+    	//Context of activation membership functions. Definitions
+    	obstacleLowerMF = new T1MF_Trapezoidal("Lower MF Low",new double[]{0.0, 0.0, 0.0, 80.0});
+    	obstacleUpperMF = new T1MF_Trapezoidal("Upper MF Low",new double[]{0.0, 0.0, 20.0, 100.0});
+    	obstacleMF = new IntervalT2MF_Trapezoidal("Low", obstacleUpperMF, obstacleLowerMF);
+    	
+    	leftWallLowerMF = new T1MF_Trapezoidal("Lower MF Low",new double[]{0.0, 0.0, 0.0, 80.0});
+    	leftWallUpperMF = new T1MF_Trapezoidal("Upper MF Low",new double[]{0.0, 0.0, 20.0, 100.0});
+    	leftWallMF = new IntervalT2MF_Trapezoidal("Low", obstacleUpperMF, obstacleLowerMF);
+    	
+    	rightWallLowerMF = new T1MF_Trapezoidal("Lower MF Low",new double[]{0.0, 0.0, 0.0, 80.0});
+    	rightWallUpperMF = new T1MF_Trapezoidal("Upper MF Low",new double[]{0.0, 0.0, 20.0, 100.0});
+    	rightWallMF = new IntervalT2MF_Trapezoidal("Low", obstacleUpperMF, obstacleLowerMF);
         
         //Obstacle avoidance membership function - close. Definition
         obstacleCloseLowerMF= new T1MF_Trapezoidal("Lower MF Close",new double[]{0.0, 0.0, 0.0, 80.0});
@@ -138,6 +180,10 @@ public class SHFLC {
         wallFarLowerMF= new T1MF_Trapezoidal("Lower MF Far",new double[]{60.0, 100.0, 100.0, 100.0});
         wallFarMF = new IntervalT2MF_Trapezoidal("IT2MF Far",wallFarUpperMF,wallFarLowerMF);
         
+        //Context of activation antecedents. Definition
+        obstacleLow = new IT2_Antecedent("Obstacle Distance Low", obstacleMF, obstacleContext);
+        leftWallLow = new IT2_Antecedent("Left Wall Distance Low", leftWallMF, leftWallContext);
+        rightWallLow = new IT2_Antecedent("Right Wall Distance Low", rightWallMF, rightWallContext);
         
         //Obstacle avoidance antecedents. Definition
         closeLeft = new IT2_Antecedent("Close Left", obstacleCloseMF, obstacleLeft);
@@ -199,7 +245,7 @@ public class SHFLC {
         leftWallRulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farFront, farBack}, new IT2_Consequent[]{leftWheelHigh, rightWheelHigh}));
         
 		//helper. remove when done as will slow down runtime.
-        plotMFs("whatever",new IntervalT2MF_Interface[]{lowMF, mediumMF, highMF},100);
+        plotMFs("whatever",new IntervalT2MF_Interface[]{obstacleMF},100);
         //plotMFs("whatever",new IntervalT2MF_Interface[]{straightMF, rightMF, leftMF},100);
         
 	}

@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import HFLC.SHFLC;
+import HFLC.SHFLC.SHFLC;
 
 /**
  * SHFLC_test

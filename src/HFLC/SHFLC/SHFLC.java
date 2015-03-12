@@ -50,6 +50,13 @@ public class SHFLC {
     IT2_Consequent rightWheelMedium;
     IT2_Consequent rightWheelHigh;
     
+    //Behaviors
+    Coordination coordination;
+    GoalSeeking goalSeeking;
+    ObstacleAvoidance obstacleAvoidance;
+    LeftWallFollowing leftWallFollowing;
+    RightWallFollowing rightWallFollowing;
+    
 	/**
 	 * SHFLC Constructor. Creates the Singleton system 
 	 * 
@@ -83,13 +90,34 @@ public class SHFLC {
         rightWheelMedium = new IT2_Consequent("Medium", mediumMF, rightWheelVelocity);
         rightWheelHigh = new IT2_Consequent("High", highMF, rightWheelVelocity);
         
-        new Coordination(200.0, 100.0, 0.0, 160.0, 40.0, 200.0, 0.0, 80.0, 20.0, 100.0, 0.0, 80.0, 20.0, 100.0);
-		new LeftWallFollowing(100.0, 0.0, 40.0, 40.0, 80.0, 60.0, 100.0, 20.0, 60.0, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh);
-		new RightWallFollowing(100.0, 0.0, 40.0, 40.0, 80.0, 60.0, 100.0, 20.0, 60.0, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh);
-		new ObstacleAvoidance(200.0, 0.0, 80.0, 80.0, 160.0, 120.0, 200.0, 40.0, 120.0, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh);
-        
+        coordination = new Coordination(200.0, 100.0, 0.0, 160.0, 40.0, 200.0, 0.0, 80.0, 20.0, 100.0, 0.0, 80.0, 20.0, 100.0);
+		leftWallFollowing = new LeftWallFollowing(100.0, 0.0, 40.0, 40.0, 80.0, 60.0, 100.0, 20.0, 60.0, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh);
+		rightWallFollowing = new RightWallFollowing(100.0, 0.0, 40.0, 40.0, 80.0, 60.0, 100.0, 20.0, 60.0, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh);
+		obstacleAvoidance = new ObstacleAvoidance(200.0, 0.0, 80.0, 80.0, 160.0, 120.0, 200.0, 40.0, 120.0, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh);
 
         
+	}
+	
+	public void run() {
+		//change to actual input
+		double leftFrontSonar = 20;
+		double rightFrontSonar = 50;
+		double leftBackSonar = 100;
+		double rightBackSonar = 90;
+		
+		double frontLeftSonar = 200;
+		double frontMiddleSonar = 200;
+		double frontRightSonar = 200;
+		
+		leftWallFollowing.setBackInput(leftBackSonar);
+		leftWallFollowing.setFrontInput(leftFrontSonar);
+		
+		rightWallFollowing.setBackInput(rightBackSonar);
+		rightWallFollowing.setFrontInput(rightFrontSonar);
+		
+		obstacleAvoidance.setLeftInput(frontLeftSonar);
+		obstacleAvoidance.setMiddleInput(frontMiddleSonar);
+		obstacleAvoidance.setRightInput(frontRightSonar);
 	}
 	
 	//helper. Copied from Juzzy. Remove when done

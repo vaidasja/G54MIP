@@ -120,4 +120,34 @@ public class ObstacleAvoidance extends SonarInputBehaviour {
 	public IT2_Rulebase getRulebase() {
 		return rulebase;
 	}
+	
+	/**
+	 * setLeftInput()
+	 * 
+	 * sets the sonar input value
+	 * @param Left sonar value
+	 */
+	public void setLeftInput(double leftInput) {
+		left.setInput(leftInput);
+	}
+	
+	/**
+	 * setRightInput()
+	 * 
+	 * sets the sonar input value
+	 * @param Right sonar value
+	 */
+	public void setRightInput(double rightInput) {
+		right.setInput(rightInput);
+	}
+	
+	/**
+	 * setMiddleInput()
+	 * 
+	 * sets the sonar input value
+	 * @param Middle sonar value
+	 */
+	public void setMiddleInput(double middleInput) {
+		middle.setInput(middleInput);
+	}
 }

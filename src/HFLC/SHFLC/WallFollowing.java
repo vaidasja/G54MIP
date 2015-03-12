@@ -105,4 +105,24 @@ public abstract class WallFollowing extends SonarInputBehaviour {
 	 * @return rulebase
 	 */
 	public abstract IT2_Rulebase getRulebase();
+	
+	/**
+	 * setFrontInput()
+	 * 
+	 * sets the sonar input value
+	 * @param Front sonar value
+	 */
+	public void setFrontInput(double frontInput) {
+		front.setInput(frontInput);
+	}
+	
+	/**
+	 * setBackInput()
+	 * 
+	 * sets the sonar input value
+	 * @param Back sonar value
+	 */
+	public void setBackInput(double backInput) {
+		back.setInput(backInput);
+	}
 }

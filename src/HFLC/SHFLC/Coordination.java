@@ -2,6 +2,9 @@ package HFLC.SHFLC;
 
 import intervalType2.sets.IntervalT2MF_Trapezoidal;
 import intervalType2.system.IT2_Antecedent;
+import intervalType2.system.IT2_Consequent;
+import intervalType2.system.IT2_Rule;
+import intervalType2.system.IT2_Rulebase;
 import type1.sets.T1MF_Trapezoidal;
 import generic.Input;
 import generic.Tuple;
@@ -38,7 +41,9 @@ public class Coordination {
     //Context of activation antecedents
 	private IT2_Antecedent obstacleLow;
 	private IT2_Antecedent leftWallLow;
-	private IT2_Antecedent rightWallLow;    
+	private IT2_Antecedent rightWallLow; 
+	
+    private IT2_Rulebase rulebase;
     
     /**
      * Coordination
@@ -109,4 +114,28 @@ public class Coordination {
         leftWallLow = new IT2_Antecedent("Left Wall Distance Low", leftWallMF, leftWallContext);
         rightWallLow = new IT2_Antecedent("Right Wall Distance Low", rightWallMF, rightWallContext);
     }
+
+	/**
+	 * createRulebase()
+	 * 
+	 * Creates the coordination rulebase.
+	 * @param leftWallFollow
+	 * @param rightWallFollow
+	 * @param obstacleAvoidance
+	 */
+	protected void createRulebase(IT2_Consequent leftWallFollow, IT2_Consequent rightWallFollow,IT2_Consequent obstacleAvoidance) {
+		rulebase = new IT2_Rulebase(3);
+        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{leftWallLow}, leftWallFollow));
+        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{rightWallLow}, rightWallFollow));
+        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{obstacleLow}, obstacleAvoidance));
+	}
+	
+	/**
+	 * getRulebase()
+	 * 
+	 * @return rulebase
+	 */
+	public IT2_Rulebase getRulebase() {
+		return rulebase;
+	}
 }

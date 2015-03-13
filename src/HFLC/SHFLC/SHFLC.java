@@ -118,6 +118,13 @@ public class SHFLC {
 		obstacleAvoidance.setLeftInput(frontLeftSonar);
 		obstacleAvoidance.setMiddleInput(frontMiddleSonar);
 		obstacleAvoidance.setRightInput(frontRightSonar);
+		
+		leftWallFollowing.createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+		rightWallFollowing.createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+		obstacleAvoidance.createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+		
+		IT2_Consequent leftWallFollowConsequentLeft = new IT2_Consequent(leftWallFollowing.getRulebase().evaluateGetCentroid(0).get());
+		coordination.createRulebase(leftWallFollow, rightWallFollow, obstacleAvoidance);
 	}
 	
 	//helper. Copied from Juzzy. Remove when done

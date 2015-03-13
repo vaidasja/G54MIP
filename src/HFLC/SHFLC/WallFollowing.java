@@ -38,7 +38,7 @@ public abstract class WallFollowing extends SonarInputBehaviour {
 	 * @param closeUpperRight
 	 * @param farLowerLeft
 	 * @param farLowerRight
-	 * @param farUpperLeft
+	 * @param farUpperLeftee
 	 * @param farUpperRight
 	 */
 	public WallFollowing(double maxInput, double closeLowerLeft,

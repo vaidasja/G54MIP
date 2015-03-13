@@ -123,11 +123,11 @@ public class Coordination {
 	 * @param rightWallFollow
 	 * @param obstacleAvoidance
 	 */
-	protected void createRulebase(IT2_Consequent leftWallFollow, IT2_Consequent rightWallFollow,IT2_Consequent obstacleAvoidance) {
+	protected void createRulebase(IT2_Consequent leftWallFollowLeft,IT2_Consequent leftWallFollowRight, IT2_Consequent rightWallFollowLeft, IT2_Consequent rightWallFollowRight,IT2_Consequent obstacleAvoidanceLeft, IT2_Consequent obstacleAvoidanceRight) {
 		rulebase = new IT2_Rulebase(3);
-        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{leftWallLow}, leftWallFollow));
-        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{rightWallLow}, rightWallFollow));
-        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{obstacleLow}, obstacleAvoidance));
+        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{leftWallLow}, new IT2_Consequent[]{leftWallFollowLeft, leftWallFollowRight}));
+        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{rightWallLow}, new IT2_Consequent[]{rightWallFollowLeft, rightWallFollowRight}));
+        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{obstacleLow}, new IT2_Consequent[]{obstacleAvoidanceLeft, obstacleAvoidanceRight}));
 	}
 	
 	/**
@@ -137,5 +137,35 @@ public class Coordination {
 	 */
 	public IT2_Rulebase getRulebase() {
 		return rulebase;
+	}
+	
+	/**
+	 * setLeftInput()
+	 * 
+	 * sets the left wall following input value
+	 * @param Left minimum sonar value
+	 */
+	public void setLeftInput(double leftInput) {
+		leftWallContext.setInput(leftInput);
+	}
+	
+	/**
+	 * setRightInput()
+	 * 
+	 * sets the right wall following input value
+	 * @param Right minimum sonar value
+	 */
+	public void setRightInput(double rightInput) {
+		rightWallContext.setInput(rightInput);
+	}
+	
+	/**
+	 * setObstacleInput()
+	 * 
+	 * sets the sonar input value
+	 * @param Obstacle avoidance minimum sonar value
+	 */
+	public void setObstacleInput(double obstacleInput) {
+		obstacleContext.setInput(obstacleInput);
 	}
 }

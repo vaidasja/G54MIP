@@ -31,6 +31,7 @@ public class Launcher {
 		//new NHFLC();
 		
 		//Launches the Singleton version
-		new SHFLC();
+		SHFLC shflc = new SHFLC();
+		shflc.run();
 	}
 }

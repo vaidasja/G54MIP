@@ -109,6 +109,12 @@ public class SHFLC {
 		double frontMiddleSonar = 200;
 		double frontRightSonar = 200;
 		
+
+		
+		leftWallFollowing.createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+		rightWallFollowing.createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+		obstacleAvoidance.createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+		
 		leftWallFollowing.setBackInput(leftBackSonar);
 		leftWallFollowing.setFrontInput(leftFrontSonar);
 		
@@ -119,12 +125,47 @@ public class SHFLC {
 		obstacleAvoidance.setMiddleInput(frontMiddleSonar);
 		obstacleAvoidance.setRightInput(frontRightSonar);
 		
-		leftWallFollowing.createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
-		rightWallFollowing.createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
-		obstacleAvoidance.createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+		IT2_Consequent leftWallFollowConsequentLeft = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(leftWheelVelocity)[0]);
+		IT2_Consequent leftWallFollowConsequentRight = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
+		IT2_Consequent rightWallFollowConsequentLeft = new IT2_Consequent((Tuple)rightWallFollowing.getRulebase().evaluateGetCentroid(0).get(leftWheelVelocity)[0]);
+		IT2_Consequent rightWallFollowConsequentRight = new IT2_Consequent((Tuple)rightWallFollowing.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
+		IT2_Consequent obstacleConsequentLeft = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(leftWheelVelocity)[0]);
+		IT2_Consequent obstacleConsequentRight = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
+		coordination.createRulebase(leftWallFollowConsequentLeft,leftWallFollowConsequentRight,rightWallFollowConsequentLeft, rightWallFollowConsequentRight, obstacleConsequentLeft, obstacleConsequentRight);
+	
+		//sends minimum values of each behaviour's sonars
+		if (leftFrontSonar <= leftBackSonar) {
+			coordination.setLeftInput(leftFrontSonar);
+		} else {
+			coordination.setLeftInput(leftBackSonar);
+		}
 		
-		IT2_Consequent leftWallFollowConsequentLeft = new IT2_Consequent(leftWallFollowing.getRulebase().evaluateGetCentroid(0).get());
-		coordination.createRulebase(leftWallFollow, rightWallFollow, obstacleAvoidance);
+		if (rightFrontSonar <= rightBackSonar) {
+			coordination.setRightInput(rightFrontSonar);
+		} else {
+			coordination.setRightInput(rightBackSonar);
+		}
+		
+		if (rightFrontSonar <= rightBackSonar) {
+			coordination.setRightInput(rightFrontSonar);
+		} else {
+			coordination.setRightInput(rightBackSonar);
+		}
+		
+		if (frontLeftSonar <= frontMiddleSonar && frontLeftSonar <= frontRightSonar) {
+			coordination.setObstacleInput(frontLeftSonar);
+		} else if (frontRightSonar <= frontMiddleSonar && frontRightSonar <=frontLeftSonar) {
+			coordination.setObstacleInput(frontRightSonar);
+		} else {
+			coordination.setObstacleInput(frontMiddleSonar);
+		}
+		
+		
+		
+		double leftOutput = coordination.getRulebase().evaluate(0).get(leftWheelVelocity);
+		double rightOutput = coordination.getRulebase().evaluate(0).get(rightWheelVelocity);
+		
+		System.out.println("left: "+leftOutput+" rightOutput: "+rightOutput);
 	}
 	
 	//helper. Copied from Juzzy. Remove when done

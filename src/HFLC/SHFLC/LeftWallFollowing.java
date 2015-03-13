@@ -14,12 +14,6 @@ import intervalType2.system.IT2_Rulebase;
  */
 public class LeftWallFollowing extends WallFollowing {
 
-	// Wall follow antecedents
-	private IT2_Antecedent closeFront;
-	private IT2_Antecedent farFront;
-	private IT2_Antecedent closeBack;
-	private IT2_Antecedent farBack;
-
 	private IT2_Rulebase rulebase;
 
 	/**

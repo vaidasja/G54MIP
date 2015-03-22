@@ -2,13 +2,9 @@ package HFLC.SHFLC;
 
 import intervalType2.sets.IntervalT2MF_Interface;
 import intervalType2.sets.IntervalT2MF_Trapezoidal;
-import intervalType2.system.IT2_Antecedent;
 import intervalType2.system.IT2_Consequent;
-import intervalType2.system.IT2_Rule;
-import intervalType2.system.IT2_Rulebase;
 import tools.JMathPlotter;
 import type1.sets.T1MF_Trapezoidal;
-import generic.Input;
 import generic.Output;
 import generic.Tuple;
 
@@ -131,6 +127,14 @@ public class SHFLC {
 		IT2_Consequent rightWallFollowConsequentRight = new IT2_Consequent((Tuple)rightWallFollowing.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
 		IT2_Consequent obstacleConsequentLeft = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(leftWheelVelocity)[0]);
 		IT2_Consequent obstacleConsequentRight = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
+		
+		leftWallFollowConsequentLeft.setOutput(leftWheelVelocity);
+		leftWallFollowConsequentRight.setOutput(rightWheelVelocity);
+		rightWallFollowConsequentLeft.setOutput(leftWheelVelocity);
+		rightWallFollowConsequentRight.setOutput(rightWheelVelocity);
+		obstacleConsequentLeft.setOutput(leftWheelVelocity);
+		obstacleConsequentRight.setOutput(rightWheelVelocity);
+		
 		coordination.createRulebase(leftWallFollowConsequentLeft,leftWallFollowConsequentRight,rightWallFollowConsequentLeft, rightWallFollowConsequentRight, obstacleConsequentLeft, obstacleConsequentRight);
 	
 		//sends minimum values of each behaviour's sonars
@@ -138,12 +142,6 @@ public class SHFLC {
 			coordination.setLeftInput(leftFrontSonar);
 		} else {
 			coordination.setLeftInput(leftBackSonar);
-		}
-		
-		if (rightFrontSonar <= rightBackSonar) {
-			coordination.setRightInput(rightFrontSonar);
-		} else {
-			coordination.setRightInput(rightBackSonar);
 		}
 		
 		if (rightFrontSonar <= rightBackSonar) {
@@ -160,12 +158,10 @@ public class SHFLC {
 			coordination.setObstacleInput(frontMiddleSonar);
 		}
 		
-		
-		
 		double leftOutput = coordination.getRulebase().evaluate(0).get(leftWheelVelocity);
 		double rightOutput = coordination.getRulebase().evaluate(0).get(rightWheelVelocity);
 		
-		System.out.println("left: "+leftOutput+" rightOutput: "+rightOutput);
+		System.out.println("left: "+leftOutput+" right: "+rightOutput);
 	}
 	
 	//helper. Copied from Juzzy. Remove when done

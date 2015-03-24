@@ -1,5 +1,7 @@
 package HFLC.SHFLC;
 
+import tools.JMathPlotter;
+import intervalType2.sets.IntervalT2MF_Interface;
 import intervalType2.system.IT2_Antecedent;
 import intervalType2.system.IT2_Consequent;
 import intervalType2.system.IT2_Rule;
@@ -59,6 +61,7 @@ public class ObstacleAvoidance extends SonarInputBehaviour {
 		createInputs(maxInput);
 		createAntecedents();
 		createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+		plotMFs("ghu", new IntervalT2MF_Interface[] {closeMF, farMF}, 100);
 	}
 
 	/**
@@ -150,4 +153,17 @@ public class ObstacleAvoidance extends SonarInputBehaviour {
 	public void setMiddleInput(double middleInput) {
 		middle.setInput(middleInput);
 	}
+	
+	//helper. Copied from Juzzy. Remove when done
+    private void plotMFs(String name, IntervalT2MF_Interface[] sets, int discretizationLevel)
+    {
+        JMathPlotter plotter = new JMathPlotter();
+        plotter.plotMF(sets[0].getName(), sets[0], discretizationLevel, null, false);
+       
+        for (int i=1;i<sets.length;i++)
+        {
+            plotter.plotMF(sets[i].getName(), sets[i], discretizationLevel, null, false);
+        }
+        plotter.show(name);
+    }
 }

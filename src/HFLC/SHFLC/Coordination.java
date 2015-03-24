@@ -65,7 +65,10 @@ public class Coordination {
     	createRightMF(rightLowerLeft, rightLowerRight, rightUpperLeft, rightUpperRight);
     	createGoalMF(maxGoalSeeking, goalLowerLeft, goalLowerRight, goalUpperLeft, goalUpperRight);
     	createAntecedents();
-		//plotMFs("gh", new IntervalT2MF_Interface[] {goalMF}, 100);
+		plotMFs("goal", new IntervalT2MF_Interface[] {goalMF}, 100);
+		plotMFs("obstacle", new IntervalT2MF_Interface[] {obstacleMF}, 100);
+		plotMFs("left", new IntervalT2MF_Interface[] {leftWallMF}, 100);
+		plotMFs("right", new IntervalT2MF_Interface[] {rightWallMF}, 100);
 
     }
     
@@ -191,6 +194,21 @@ public class Coordination {
 	 */
 	public void setObstacleInput(double obstacleInput) {
 		obstacleContext.setInput(obstacleInput);
+	}
+	
+	/**
+	 * setGoalInput()
+	 * 
+	 * Sets the input for the goal seeking behavior as the minimum input of all the other mehaviors
+	 */
+	public void setGoalInput() {
+		if (rightWallContext.getInput() <= leftWallContext.getInput() && rightWallContext.getInput() <= obstacleContext.getInput()) {
+			goalSeekingContext.setInput(rightWallContext.getInput());
+		} else if (obstacleContext.getInput() <= leftWallContext.getInput() && obstacleContext.getInput() <=rightWallContext.getInput()) {
+			goalSeekingContext.setInput(obstacleContext.getInput());
+		} else {
+			goalSeekingContext.setInput(leftWallContext.getInput());
+		}
 	}
 	
 	//helper. Copied from Juzzy. Remove when done

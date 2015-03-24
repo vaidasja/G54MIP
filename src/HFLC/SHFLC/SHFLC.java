@@ -31,8 +31,8 @@ public class SHFLC {
 	final int LEFT_BACK_SONAR = 15;
 	final int RIGHT_FRONT_SONAR = 7;
 	final int RIGHT_BACK_SONAR = 8;
-	final int FRONT_LEFT_SONAR = 2;
-	final int FRONT_RIGHT_SONAR = 5;
+	final int FRONT_LEFT_SONAR = 1;
+	final int FRONT_RIGHT_SONAR = 6;
 	final int FRONT_MIDDLE_SONAR_1 = 3;
 	final int FRONT_MIDDLE_SONAR_2 = 4;
 	
@@ -81,8 +81,8 @@ public class SHFLC {
         rightWheelVelocity = new Output("Right Wheel Velocity", new Tuple(-100, 400));
         
         //Output membership function - low. Definition
-        lowLowerMF= new T1MF_Trapezoidal("Lower MF Low",new double[]{0.0, 50.0, 50.0, 100.0});
-        lowUpperMF= new T1MF_Trapezoidal("Upper MF Low",new double[]{-100.0, 0.0, 100.0, 200.0});
+        lowLowerMF= new T1MF_Trapezoidal("Lower MF Low",new double[]{-100.0, -100.0, -100.0, 100.0});
+        lowUpperMF= new T1MF_Trapezoidal("Upper MF Low",new double[]{-100.0, -100.0, 50.0, 200.0});
         lowMF = new IntervalT2MF_Trapezoidal("IT2MF Low",lowUpperMF,lowLowerMF);
         
         //Output membership function - medium. Definition
@@ -103,12 +103,13 @@ public class SHFLC {
         rightWheelMedium = new IT2_Consequent("Medium", mediumMF, rightWheelVelocity);
         rightWheelHigh = new IT2_Consequent("High", highMF, rightWheelVelocity);
         
-        coordination = new Coordination(5000.0, 5000.0, 5000.0, 0.0, 160.0, 40.0, 200.0, 0.0, 80.0, 20.0, 100.0, 0.0, 80.0, 20.0, 100.0, 60.0, 220.0, 20.0, 180.0);
-		leftWallFollowing = new LeftWallFollowing(5000.0, 0.0, 40.0, 40.0, 80.0, 60.0, 100.0, 20.0, 60.0, leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
-		rightWallFollowing = new RightWallFollowing(5000.0, 0.0, 40.0, 40.0, 80.0, 60.0, 100.0, 20.0, 60.0, leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
-		obstacleAvoidance = new ObstacleAvoidance(5000.0, 0.0, 80.0, 80.0, 160.0, 120.0, 200.0, 40.0, 120.0, leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+        coordination = new Coordination(500.0, 500.0, 500.0, 0.0, 160.0, 40.0, 200.0, 0.0, 80.0, 20.0, 100.0, 0.0, 80.0, 20.0, 100.0, 60.0, 220.0, 20.0, 180.0);
+		leftWallFollowing = new LeftWallFollowing(500.0, 0.0, 40.0, 40.0, 80.0, 60.0, 100.0, 20.0, 60.0, leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+		rightWallFollowing = new RightWallFollowing(500.0, 0.0, 40.0, 40.0, 80.0, 60.0, 100.0, 20.0, 60.0, leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+		obstacleAvoidance = new ObstacleAvoidance(500.0, 0.0, 80.0, 80.0, 160.0, 120.0, 200.0, 40.0, 120.0, leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
 		goalSeeking = new GoalSeeking(-180.0, -60.0, -120.0, 0.0, 60.0, 180.0, 0.0, 120.0, -30.0, 0.0, 0.0, 30.0, -100.0, -40.0, 40.0, 100.0, leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
         
+		plotMFs("gh", new IntervalT2MF_Interface[] {lowMF, mediumMF, highMF}, 100);
 	}
 	
 	public void run() {
@@ -150,8 +151,10 @@ public class SHFLC {
 			double frontMiddleSonar = (robot.getSonarRange(FRONT_MIDDLE_SONAR_1)+robot.getSonarRange(FRONT_MIDDLE_SONAR_2))/20;
 			double frontRightSonar = robot.getSonarRange(FRONT_RIGHT_SONAR)/10;
 
-			double bearing = 90-(180/Math.PI)*Math.atan2(GOAL_Y-robot.getY(),GOAL_X-robot.getX());
-			//System.out.println(bearing + " " + robot.getX() + " " + robot.getY());
+			//System.out.println("Left Front: "+ leftFrontSonar + " Left Back : " + leftBackSonar + " Right front: " + rightFrontSonar + " Right back: " + rightBackSonar + " Front: " + frontMiddleSonar + " Front Left: "  + frontLeftSonar + "Front Right " + frontRightSonar);
+			//double bearing = 90-(180/Math.PI)*Math.atan2(GOAL_Y-robot.getY(),GOAL_X-robot.getX());
+			double bearing = robot.getTh();
+			//System.out.println(bearing );
 			
 			leftWallFollowing.setBackInput(leftBackSonar);
 			leftWallFollowing.setFrontInput(leftFrontSonar);
@@ -169,10 +172,18 @@ public class SHFLC {
 			IT2_Consequent leftWallFollowConsequentRight = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
 			IT2_Consequent rightWallFollowConsequentLeft = new IT2_Consequent((Tuple)rightWallFollowing.getRulebase().evaluateGetCentroid(0).get(leftWheelVelocity)[0]);
 			IT2_Consequent rightWallFollowConsequentRight = new IT2_Consequent((Tuple)rightWallFollowing.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
-			IT2_Consequent obstacleConsequentLeft = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(leftWheelVelocity)[0]);
-			IT2_Consequent obstacleConsequentRight = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
+			IT2_Consequent obstacleConsequentLeft = new IT2_Consequent((Tuple)obstacleAvoidance.getRulebase().evaluateGetCentroid(0).get(leftWheelVelocity)[0]);
+			IT2_Consequent obstacleConsequentRight = new IT2_Consequent((Tuple)obstacleAvoidance.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
 			IT2_Consequent goalConsequentLeft = new IT2_Consequent((Tuple)goalSeeking.getRulebase().evaluateGetCentroid(0).get(leftWheelVelocity)[0]);
 			IT2_Consequent goalConsequentRight = new IT2_Consequent((Tuple)goalSeeking.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
+			
+//			double leftLeft = leftWallFollowing.getRulebase().evaluate(0).get(leftWheelVelocity);
+//			double leftRight = leftWallFollowing.getRulebase().evaluate(0).get(rightWheelVelocity);
+//			double rightLeft = rightWallFollowing.getRulebase().evaluate(0).get(leftWheelVelocity);
+//			double rightRight = rightWallFollowing.getRulebase().evaluate(0).get(rightWheelVelocity);
+			double obstacleLeft = leftWallFollowing.getRulebase().evaluate(0).get(leftWheelVelocity);
+			double obstacleRight = leftWallFollowing.getRulebase().evaluate(0).get(rightWheelVelocity);
+			System.out.println(obstacleLeft + " " + obstacleRight);
 			
 			leftWallFollowConsequentLeft.setOutput(leftWheelVelocity);
 			leftWallFollowConsequentRight.setOutput(rightWheelVelocity);
@@ -206,10 +217,10 @@ public class SHFLC {
 				coordination.setObstacleInput(frontMiddleSonar);
 			}
 			
+			coordination.setGoalInput();
+			
 			double leftOutput = coordination.getRulebase().evaluate(0).get(leftWheelVelocity);
 			double rightOutput = coordination.getRulebase().evaluate(0).get(rightWheelVelocity);
-			System.out.println(leftFrontSonar);
-
 		    
 		    robot.enableMotors();
 

@@ -8,6 +8,8 @@ import type1.sets.T1MF_Trapezoidal;
 import generic.Output;
 import generic.Tuple;
 
+import com.mobilerobots.Aria.*;
+
 /**
  * Singleton HFLC
  * 
@@ -19,6 +21,21 @@ import generic.Tuple;
 
 public class SHFLC {
 
+	
+	//set the goal 
+	final int GOAL_X = 5000;
+	final int GOAL_Y = 5000;
+	
+	//sonar sensor constants
+	final int LEFT_FRONT_SONAR = 0;
+	final int LEFT_BACK_SONAR = 15;
+	final int RIGHT_FRONT_SONAR = 7;
+	final int RIGHT_BACK_SONAR = 8;
+	final int FRONT_LEFT_SONAR = 2;
+	final int FRONT_RIGHT_SONAR = 5;
+	final int FRONT_MIDDLE_SONAR_1 = 3;
+	final int FRONT_MIDDLE_SONAR_2 = 4;
+	
 	//Output
 	Output leftWheelVelocity;
 	Output rightWheelVelocity;
@@ -87,81 +104,121 @@ public class SHFLC {
         rightWheelHigh = new IT2_Consequent("High", highMF, rightWheelVelocity);
         
         coordination = new Coordination(200.0, 100.0, 0.0, 160.0, 40.0, 200.0, 0.0, 80.0, 20.0, 100.0, 0.0, 80.0, 20.0, 100.0);
-		leftWallFollowing = new LeftWallFollowing(100.0, 0.0, 40.0, 40.0, 80.0, 60.0, 100.0, 20.0, 60.0, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh);
-		rightWallFollowing = new RightWallFollowing(100.0, 0.0, 40.0, 40.0, 80.0, 60.0, 100.0, 20.0, 60.0, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh);
-		obstacleAvoidance = new ObstacleAvoidance(200.0, 0.0, 80.0, 80.0, 160.0, 120.0, 200.0, 40.0, 120.0, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh, leftWheelHigh);
-
+		leftWallFollowing = new LeftWallFollowing(100.0, 0.0, 40.0, 40.0, 80.0, 60.0, 100.0, 20.0, 60.0, leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+		rightWallFollowing = new RightWallFollowing(100.0, 0.0, 40.0, 40.0, 80.0, 60.0, 100.0, 20.0, 60.0, leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+		obstacleAvoidance = new ObstacleAvoidance(200.0, 0.0, 80.0, 80.0, 160.0, 120.0, 200.0, 40.0, 120.0, leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
         
 	}
 	
 	public void run() {
-		//change to actual input
-		double leftFrontSonar = 20;
-		double rightFrontSonar = 50;
-		double leftBackSonar = 100;
-		double rightBackSonar = 90;
 		
-		double frontLeftSonar = 200;
-		double frontMiddleSonar = 200;
-		double frontRightSonar = 200;
-		
-
-		
-		leftWallFollowing.createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
-		rightWallFollowing.createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
-		obstacleAvoidance.createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
-		
-		leftWallFollowing.setBackInput(leftBackSonar);
-		leftWallFollowing.setFrontInput(leftFrontSonar);
-		
-		rightWallFollowing.setBackInput(rightBackSonar);
-		rightWallFollowing.setFrontInput(rightFrontSonar);
-		
-		obstacleAvoidance.setLeftInput(frontLeftSonar);
-		obstacleAvoidance.setMiddleInput(frontMiddleSonar);
-		obstacleAvoidance.setRightInput(frontRightSonar);
-		
-		IT2_Consequent leftWallFollowConsequentLeft = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(leftWheelVelocity)[0]);
-		IT2_Consequent leftWallFollowConsequentRight = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
-		IT2_Consequent rightWallFollowConsequentLeft = new IT2_Consequent((Tuple)rightWallFollowing.getRulebase().evaluateGetCentroid(0).get(leftWheelVelocity)[0]);
-		IT2_Consequent rightWallFollowConsequentRight = new IT2_Consequent((Tuple)rightWallFollowing.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
-		IT2_Consequent obstacleConsequentLeft = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(leftWheelVelocity)[0]);
-		IT2_Consequent obstacleConsequentRight = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
-		
-		leftWallFollowConsequentLeft.setOutput(leftWheelVelocity);
-		leftWallFollowConsequentRight.setOutput(rightWheelVelocity);
-		rightWallFollowConsequentLeft.setOutput(leftWheelVelocity);
-		rightWallFollowConsequentRight.setOutput(rightWheelVelocity);
-		obstacleConsequentLeft.setOutput(leftWheelVelocity);
-		obstacleConsequentRight.setOutput(rightWheelVelocity);
-		
-		coordination.createRulebase(leftWallFollowConsequentLeft,leftWallFollowConsequentRight,rightWallFollowConsequentLeft, rightWallFollowConsequentRight, obstacleConsequentLeft, obstacleConsequentRight);
+	    try {
+	        System.loadLibrary("AriaJava");
+	    } catch (UnsatisfiedLinkError e) {
+	      System.err.println("Native code library libAriaJava failed to load. Make sure that its directory is in your library path; See javaExamples/README.txt and the chapter on Dynamic Linking Problems in the SWIG Java documentation (http://www.swig.org) for help.\n" + e);
+	      System.exit(1);
+	    }
+	  
 	
-		//sends minimum values of each behaviour's sonars
-		if (leftFrontSonar <= leftBackSonar) {
-			coordination.setLeftInput(leftFrontSonar);
-		} else {
-			coordination.setLeftInput(leftBackSonar);
+	    Aria.init();
+
+	    ArRobot robot = new ArRobot();
+	    ArSimpleConnector conn = new ArSimpleConnector(new String[]{});
+	 
+	    if(!Aria.parseArgs())
+	    {
+	      Aria.logOptions();
+	      Aria.exit(1);
+	    }
+
+	    if (!conn.connectRobot(robot))
+	    {
+	      System.err.println("Could not connect to robot, exiting.\n");
+	      System.exit(1);
+	    }
+	    robot.runAsync(true);
+	    
+		while(true) {
+			//input
+			double leftFrontSonar = robot.getSonarRange(LEFT_FRONT_SONAR)/10;
+			double leftBackSonar = robot.getSonarRange(LEFT_BACK_SONAR)/10;
+			double rightFrontSonar = robot.getSonarRange(RIGHT_FRONT_SONAR)/10;
+			double rightBackSonar = robot.getSonarRange(RIGHT_BACK_SONAR)/10;
+			
+			double frontLeftSonar = robot.getSonarRange(FRONT_LEFT_SONAR)/10;
+			double frontMiddleSonar = (robot.getSonarRange(FRONT_MIDDLE_SONAR_1)+robot.getSonarRange(FRONT_MIDDLE_SONAR_2))/20;
+			double frontRightSonar = robot.getSonarRange(FRONT_RIGHT_SONAR)/10;
+
+			//double bearing = 90-(180/Math.PI)*Math.atan2(GOAL_Y-robot.getY(),GOAL_X-robot.getX());
+			//System.out.println(bearing + " " + robot.getX() + " " + robot.getY());
+			
+	
+			
+//			leftWallFollowing.createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+//			rightWallFollowing.createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+//			obstacleAvoidance.createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
+			
+			leftWallFollowing.setBackInput(leftBackSonar);
+			leftWallFollowing.setFrontInput(leftFrontSonar);
+			
+			rightWallFollowing.setBackInput(rightBackSonar);
+			rightWallFollowing.setFrontInput(rightFrontSonar);
+			
+			obstacleAvoidance.setLeftInput(frontLeftSonar);
+			obstacleAvoidance.setMiddleInput(frontMiddleSonar);
+			obstacleAvoidance.setRightInput(frontRightSonar);
+			
+			IT2_Consequent leftWallFollowConsequentLeft = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(leftWheelVelocity)[0]);
+			IT2_Consequent leftWallFollowConsequentRight = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
+			IT2_Consequent rightWallFollowConsequentLeft = new IT2_Consequent((Tuple)rightWallFollowing.getRulebase().evaluateGetCentroid(0).get(leftWheelVelocity)[0]);
+			IT2_Consequent rightWallFollowConsequentRight = new IT2_Consequent((Tuple)rightWallFollowing.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
+			IT2_Consequent obstacleConsequentLeft = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(leftWheelVelocity)[0]);
+			IT2_Consequent obstacleConsequentRight = new IT2_Consequent((Tuple)leftWallFollowing.getRulebase().evaluateGetCentroid(0).get(rightWheelVelocity)[0]);
+			
+			leftWallFollowConsequentLeft.setOutput(leftWheelVelocity);
+			leftWallFollowConsequentRight.setOutput(rightWheelVelocity);
+			rightWallFollowConsequentLeft.setOutput(leftWheelVelocity);
+			rightWallFollowConsequentRight.setOutput(rightWheelVelocity);
+			obstacleConsequentLeft.setOutput(leftWheelVelocity);
+			obstacleConsequentRight.setOutput(rightWheelVelocity);
+			
+			coordination.createRulebase(leftWallFollowConsequentLeft,leftWallFollowConsequentRight,rightWallFollowConsequentLeft, rightWallFollowConsequentRight, obstacleConsequentLeft, obstacleConsequentRight);
+			
+			//sends minimum values of each behaviour's sonars
+			if (leftFrontSonar <= leftBackSonar) {
+				coordination.setLeftInput(leftFrontSonar);
+			} else {
+				coordination.setLeftInput(leftBackSonar);
+			}
+			
+			if (rightFrontSonar <= rightBackSonar) {
+				coordination.setRightInput(rightFrontSonar);
+			} else {
+				coordination.setRightInput(rightBackSonar);
+			}
+			
+			if (frontLeftSonar <= frontMiddleSonar && frontLeftSonar <= frontRightSonar) {
+				coordination.setObstacleInput(frontLeftSonar);
+			} else if (frontRightSonar <= frontMiddleSonar && frontRightSonar <=frontLeftSonar) {
+				coordination.setObstacleInput(frontRightSonar);
+			} else {
+				coordination.setObstacleInput(frontMiddleSonar);
+			}
+			
+			double leftOutput = coordination.getRulebase().evaluate(0).get(leftWheelVelocity);
+			double rightOutput = coordination.getRulebase().evaluate(0).get(rightWheelVelocity);
+			System.out.println(leftFrontSonar);
+
+		    
+		    robot.enableMotors();
+
+		    	robot.lock();
+		        robot.setVel2(leftOutput, rightOutput);
+		        robot.unlock();
+
+		    ArUtil.sleep(50);
+			
 		}
-		
-		if (rightFrontSonar <= rightBackSonar) {
-			coordination.setRightInput(rightFrontSonar);
-		} else {
-			coordination.setRightInput(rightBackSonar);
-		}
-		
-		if (frontLeftSonar <= frontMiddleSonar && frontLeftSonar <= frontRightSonar) {
-			coordination.setObstacleInput(frontLeftSonar);
-		} else if (frontRightSonar <= frontMiddleSonar && frontRightSonar <=frontLeftSonar) {
-			coordination.setObstacleInput(frontRightSonar);
-		} else {
-			coordination.setObstacleInput(frontMiddleSonar);
-		}
-		
-		double leftOutput = coordination.getRulebase().evaluate(0).get(leftWheelVelocity);
-		double rightOutput = coordination.getRulebase().evaluate(0).get(rightWheelVelocity);
-		
-		System.out.println("left: "+leftOutput+" right: "+rightOutput);
 	}
 	
 	//helper. Copied from Juzzy. Remove when done

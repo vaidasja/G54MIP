@@ -1,6 +1,10 @@
 package HFLC;
 
+import HFLC.SHFLC.LeftWallTester;
+import HFLC.SHFLC.RuleTuner;
 import HFLC.SHFLC.SHFLC;
+import HFLC.SHFLC.RightWallTester;
+import HFLC.SHFLC.WallFollowTuner;
 
 /**
  * Non-singleton Hierarchical Fuzzy Logic Controller
@@ -31,7 +35,16 @@ public class Launcher {
 		//new NHFLC();
 		
 		//Launches the Singleton version
-		SHFLC shflc = new SHFLC();
-		shflc.run();
+//		SHFLC shflc = new SHFLC();
+//		shflc.run();
+		
+		//launches the tuner
+		//WallFollowTuner tuner = new WallFollowTuner();
+		
+		//RuleTuner tuner1 = new RuleTuner();
+	
+		RightWallTester tester = new RightWallTester();
+
+		//LeftWallTester tester = new LeftWallTester();
 	}
 }

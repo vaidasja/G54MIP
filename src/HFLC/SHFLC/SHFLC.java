@@ -27,9 +27,9 @@ public class SHFLC {
 	final int GOAL_Y = 5000;
 	
 	//sonar sensor constants
-	final int LEFT_FRONT_SONAR = 0;
+	final int LEFT_FRONT_SONAR = 0;//0-15 arba 1-14 placiau
 	final int LEFT_BACK_SONAR = 15;
-	final int RIGHT_FRONT_SONAR = 7;
+	final int RIGHT_FRONT_SONAR = 7; //8-8 arba 6-9 placiau
 	final int RIGHT_BACK_SONAR = 8;
 	final int FRONT_LEFT_SONAR = 1;
 	final int FRONT_RIGHT_SONAR = 6;
@@ -150,7 +150,7 @@ public class SHFLC {
 			double frontLeftSonar = robot.getSonarRange(FRONT_LEFT_SONAR)/10;
 			double frontMiddleSonar = (robot.getSonarRange(FRONT_MIDDLE_SONAR_1)+robot.getSonarRange(FRONT_MIDDLE_SONAR_2))/20;
 			double frontRightSonar = robot.getSonarRange(FRONT_RIGHT_SONAR)/10;
-
+			System.out.println(frontLeftSonar*10);
 			//System.out.println("Left Front: "+ leftFrontSonar + " Left Back : " + leftBackSonar + " Right front: " + rightFrontSonar + " Right back: " + rightBackSonar + " Front: " + frontMiddleSonar + " Front Left: "  + frontLeftSonar + "Front Right " + frontRightSonar);
 			//double bearing = 90-(180/Math.PI)*Math.atan2(GOAL_Y-robot.getY(),GOAL_X-robot.getX());
 			double bearing = robot.getTh();
@@ -183,7 +183,7 @@ public class SHFLC {
 //			double rightRight = rightWallFollowing.getRulebase().evaluate(0).get(rightWheelVelocity);
 			double obstacleLeft = leftWallFollowing.getRulebase().evaluate(0).get(leftWheelVelocity);
 			double obstacleRight = leftWallFollowing.getRulebase().evaluate(0).get(rightWheelVelocity);
-			System.out.println(obstacleLeft + " " + obstacleRight);
+			//System.out.println(obstacleLeft + " " + obstacleRight);
 			
 			leftWallFollowConsequentLeft.setOutput(leftWheelVelocity);
 			leftWallFollowConsequentRight.setOutput(rightWheelVelocity);
@@ -221,7 +221,7 @@ public class SHFLC {
 			
 			double leftOutput = coordination.getRulebase().evaluate(0).get(leftWheelVelocity);
 			double rightOutput = coordination.getRulebase().evaluate(0).get(rightWheelVelocity);
-		    
+
 		    robot.enableMotors();
 
 		    	robot.lock();

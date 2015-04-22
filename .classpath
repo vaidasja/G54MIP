@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="/Juzzy/bin/generalType2zSlices"/>
 	<classpathentry kind="lib" path="/Juzzy/bin/generic"/>
 	<classpathentry kind="lib" path="/Juzzy/bin/intervalType2"/>
@@ -16,7 +15,12 @@
 	<classpathentry kind="lib" path="/Juzzy/src/type1"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Juzzy"/>
-	<classpathentry kind="lib" path="/Juzzy/jmathplot.jar"/>
 	<classpathentry kind="lib" path="/usr/local/Aria/java/Aria.jar"/>
+	<classpathentry kind="lib" path="/home/vaidas/workspace/Juzzy/jmathplot.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/usr/local/Aria/lib"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

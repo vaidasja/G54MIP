@@ -43,8 +43,8 @@ public class Launcher {
 		
 		//RuleTuner tuner1 = new RuleTuner();
 	
-		RightWallTester tester = new RightWallTester();
+		//RightWallTester tester = new RightWallTester();
 
-		//LeftWallTester tester = new LeftWallTester();
+		LeftWallTester tester = new LeftWallTester();
 	}
 }

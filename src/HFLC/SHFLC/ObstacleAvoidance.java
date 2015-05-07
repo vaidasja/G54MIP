@@ -61,7 +61,7 @@ public class ObstacleAvoidance extends SonarInputBehaviour {
 		createInputs(maxInput);
 		createAntecedents();
 		createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
-		plotMFs("ghu", new IntervalT2MF_Interface[] {closeMF, farMF}, 100);
+//		plotMFs("ghu", new IntervalT2MF_Interface[] {closeMF, farMF}, 100);
 	}
 
 	/**
@@ -105,12 +105,12 @@ public class ObstacleAvoidance extends SonarInputBehaviour {
 	 */
 	protected void createRulebase(IT2_Consequent leftWheelLow, IT2_Consequent leftWheelMedium,IT2_Consequent leftWheelHigh,IT2_Consequent rightWheelLow,IT2_Consequent rightWheelMedium,IT2_Consequent rightWheelHigh) {
 		rulebase = new IT2_Rulebase(8);
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, closeMiddle, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelLow}));
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, closeMiddle, farRight}, new IT2_Consequent[]{leftWheelMedium, rightWheelLow}));
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, farMiddle, closeRight}, new IT2_Consequent[]{leftWheelMedium, rightWheelMedium}));
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, farMiddle, farRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelLow}));
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, closeMiddle, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelMedium}));
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, closeMiddle, farRight}, new IT2_Consequent[]{leftWheelLow, rightWheelLow}));
+		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, closeMiddle, closeRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelLow}));
+		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, closeMiddle, farRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelLow}));
+		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, farMiddle, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelLow}));
+		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, farMiddle, farRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelMedium}));
+		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, closeMiddle, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelHigh}));
+		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, closeMiddle, farRight}, new IT2_Consequent[]{leftWheelLow, rightWheelHigh}));
 		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, farMiddle, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelMedium}));
 		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, farMiddle, farRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelHigh}));
 	}

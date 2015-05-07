@@ -65,10 +65,10 @@ public class Coordination {
     	createRightMF(rightLowerLeft, rightLowerRight, rightUpperLeft, rightUpperRight);
     	createGoalMF(maxGoalSeeking, goalLowerLeft, goalLowerRight, goalUpperLeft, goalUpperRight);
     	createAntecedents();
-		plotMFs("goal", new IntervalT2MF_Interface[] {goalMF}, 100);
-		plotMFs("obstacle", new IntervalT2MF_Interface[] {obstacleMF}, 100);
-		plotMFs("left", new IntervalT2MF_Interface[] {leftWallMF}, 100);
-		plotMFs("right", new IntervalT2MF_Interface[] {rightWallMF}, 100);
+//		plotMFs("goal", new IntervalT2MF_Interface[] {goalMF}, 100);
+//		plotMFs("obstacle", new IntervalT2MF_Interface[] {obstacleMF}, 100);
+//		plotMFs("left", new IntervalT2MF_Interface[] {leftWallMF}, 100);
+//		plotMFs("right", new IntervalT2MF_Interface[] {rightWallMF}, 100);
 
     }
     
@@ -150,10 +150,10 @@ public class Coordination {
 	 * @param obstacleAvoidance
 	 */
 	protected void createRulebase(IT2_Consequent leftWallFollowLeft,IT2_Consequent leftWallFollowRight, IT2_Consequent rightWallFollowLeft, IT2_Consequent rightWallFollowRight,IT2_Consequent obstacleAvoidanceLeft, IT2_Consequent obstacleAvoidanceRight, IT2_Consequent goalSeekingLeft, IT2_Consequent goalSeekingRight) {
-		rulebase = new IT2_Rulebase(4);
+		rulebase = new IT2_Rulebase(3);
         rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{leftWallLow}, new IT2_Consequent[]{leftWallFollowLeft, leftWallFollowRight}));
         rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{rightWallLow}, new IT2_Consequent[]{rightWallFollowLeft, rightWallFollowRight}));
-        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{obstacleLow}, new IT2_Consequent[]{obstacleAvoidanceLeft, obstacleAvoidanceRight}));
+        //rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{obstacleLow}, new IT2_Consequent[]{obstacleAvoidanceLeft, obstacleAvoidanceRight}));
         rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{goalHigh}, new IT2_Consequent[]{goalSeekingLeft, goalSeekingRight}));
 	}
 	

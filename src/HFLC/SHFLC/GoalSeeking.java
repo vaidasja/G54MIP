@@ -59,7 +59,7 @@ public class GoalSeeking {
 		createAntecedents();
 		createRulebase(leftWheelLow, leftWheelMedium, leftWheelHigh, rightWheelLow, rightWheelMedium, rightWheelHigh);
 		// TODO remove
-		//plotMFs("gh", new IntervalT2MF_Interface[] {negativeMF, zeroMF, positiveMF}, 100);
+//		plotMFs("gh", new IntervalT2MF_Interface[] {negativeMF, zeroMF, positiveMF}, 100);
 	}
 	
 	/**

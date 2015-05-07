@@ -65,18 +65,10 @@ public class LeftWallFollowing extends WallFollowing {
 			IT2_Consequent rightWheelLow, IT2_Consequent rightWheelMedium,
 			IT2_Consequent rightWheelHigh) {
 		rulebase = new IT2_Rulebase(4);
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[] { closeFront,
-				closeBack }, new IT2_Consequent[] { leftWheelMedium,
-				rightWheelMedium }));
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[] { closeFront,
-				farBack },
-				new IT2_Consequent[] { leftWheelHigh, rightWheelLow }));
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[] { farFront,
-				closeBack }, new IT2_Consequent[] { leftWheelLow,
-				rightWheelHigh }));
-		rulebase.addRule(new IT2_Rule(
-				new IT2_Antecedent[] { farFront, farBack },
-				new IT2_Consequent[] { leftWheelHigh, rightWheelHigh }));
+        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeFront, closeBack}, new IT2_Consequent[]{leftWheelMedium, rightWheelLow}));
+        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeFront, farBack}, new IT2_Consequent[]{leftWheelHigh, rightWheelLow}));
+        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farFront, closeBack}, new IT2_Consequent[]{leftWheelLow, rightWheelHigh}));
+        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farFront, farBack}, new IT2_Consequent[]{leftWheelLow, rightWheelMedium}));
 	}
 
 	/**

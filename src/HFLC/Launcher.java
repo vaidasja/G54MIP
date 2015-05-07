@@ -1,5 +1,6 @@
 package HFLC;
 
+import HFLC.SHFLC.GoalTester;
 import HFLC.SHFLC.LeftWallTester;
 import HFLC.SHFLC.RuleTuner;
 import HFLC.SHFLC.SHFLC;
@@ -35,8 +36,8 @@ public class Launcher {
 		//new NHFLC();
 		
 		//Launches the Singleton version
-//		SHFLC shflc = new SHFLC();
-//		shflc.run();
+		SHFLC shflc = new SHFLC();
+		shflc.run();
 		
 		//launches the tuner
 		//WallFollowTuner tuner = new WallFollowTuner();
@@ -45,6 +46,8 @@ public class Launcher {
 	
 		//RightWallTester tester = new RightWallTester();
 
-		LeftWallTester tester = new LeftWallTester();
+	//	LeftWallTester tester = new LeftWallTester();
+		
+//		GoalTester tester = new GoalTester();
 	}
 }

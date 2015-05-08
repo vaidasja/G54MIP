@@ -34,8 +34,8 @@ public class Launcher {
 		//new NHFLC();
 		
 		//Launches the controller
-//		HFLC shflc = new HFLC();
-//		shflc.run();
+		HFLC shflc = new HFLC();
+		shflc.run();
 //		
 		//launches the tuner
 		//WallFollowTuner tuner = new WallFollowTuner();
@@ -44,7 +44,7 @@ public class Launcher {
 	
 //		RightWallTester tester = new RightWallTester();
 
-		LeftWallTester tester = new LeftWallTester();
+//		LeftWallTester tester = new LeftWallTester();
 		
 //		GoalTester tester = new GoalTester();
 	}

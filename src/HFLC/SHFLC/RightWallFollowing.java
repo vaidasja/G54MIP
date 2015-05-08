@@ -8,7 +8,7 @@ import intervalType2.system.IT2_Rulebase;
 /**
  * Right Wall Following
  * 
- * Right wall following behaviour for singleton fuzzy system.
+ * Right wall following behaviour.
  * 
  * @author vxj11u
  *

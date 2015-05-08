@@ -9,7 +9,7 @@ import generic.Tuple;
 /**
  * Wall Following
  * 
- * Wall following behaviour for singleton fuzzy system.
+ * Wall following behaviour.
  * 
  * @author vxj11u
  *

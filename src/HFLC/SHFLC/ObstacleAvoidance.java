@@ -12,7 +12,7 @@ import generic.Tuple;
 /**
  * ObstacleAvoidance
  * 
- * Obstacle avoidance behaviour for singleton fuzzy system.
+ * Obstacle avoidance behaviour.
  * 
  * @author vxj11u
  *
@@ -104,15 +104,21 @@ public class ObstacleAvoidance extends SonarInputBehaviour {
 	 * @param rightWheelHigh
 	 */
 	protected void createRulebase(IT2_Consequent leftWheelLow, IT2_Consequent leftWheelMedium,IT2_Consequent leftWheelHigh,IT2_Consequent rightWheelLow,IT2_Consequent rightWheelMedium,IT2_Consequent rightWheelHigh) {
-		rulebase = new IT2_Rulebase(8);
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, closeMiddle, closeRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelLow}));
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, closeMiddle, farRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelLow}));
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, farMiddle, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelLow}));
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, farMiddle, farRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelMedium}));
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, closeMiddle, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelHigh}));
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, closeMiddle, farRight}, new IT2_Consequent[]{leftWheelLow, rightWheelHigh}));
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, farMiddle, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelMedium}));
-		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, farMiddle, farRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelHigh}));
+//		rulebase = new IT2_Rulebase(8);
+//		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, closeMiddle, closeRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelLow}));
+//		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, closeMiddle, farRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelLow}));
+//		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, farMiddle, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelLow}));
+//		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, farMiddle, farRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelMedium}));
+//		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, closeMiddle, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelHigh}));
+//		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, closeMiddle, farRight}, new IT2_Consequent[]{leftWheelLow, rightWheelHigh}));
+//		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, farMiddle, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelMedium}));
+//		rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, farMiddle, farRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelHigh}));
+	
+		rulebase = new IT2_Rulebase(4);
+        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelLow}));
+        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{closeLeft, farRight}, new IT2_Consequent[]{leftWheelHigh, rightWheelLow}));
+        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, closeRight}, new IT2_Consequent[]{leftWheelLow, rightWheelHigh}));
+        rulebase.addRule(new IT2_Rule(new IT2_Antecedent[]{farLeft, farRight}, new IT2_Consequent[]{leftWheelMedium, rightWheelMedium}));
 	}
 	
 	/**
@@ -153,17 +159,5 @@ public class ObstacleAvoidance extends SonarInputBehaviour {
 	public void setMiddleInput(double middleInput) {
 		middle.setInput(middleInput);
 	}
-	
-	//helper. Copied from Juzzy. Remove when done
-    private void plotMFs(String name, IntervalT2MF_Interface[] sets, int discretizationLevel)
-    {
-        JMathPlotter plotter = new JMathPlotter();
-        plotter.plotMF(sets[0].getName(), sets[0], discretizationLevel, null, false);
-       
-        for (int i=1;i<sets.length;i++)
-        {
-            plotter.plotMF(sets[i].getName(), sets[i], discretizationLevel, null, false);
-        }
-        plotter.show(name);
-    }
+
 }

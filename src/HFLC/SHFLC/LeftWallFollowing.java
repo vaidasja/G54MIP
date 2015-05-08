@@ -7,7 +7,7 @@ import intervalType2.system.IT2_Rulebase;
 /**
  * Left Wall Following
  * 
- * Left wall following behaviour for singleton fuzzy system.
+ * Left wall following behaviour.
  * 
  * @author vxj11u
  *

@@ -10,8 +10,12 @@ import intervalType2.system.IT2_Consequent;
 import intervalType2.system.IT2_Rule;
 import intervalType2.system.IT2_Rulebase;
 import tools.JMathPlotter;
+import type1.sets.T1MF_Interface;
 import type1.sets.T1MF_Trapezoidal;
+import type1.system.T1_Antecedent;
 import type1.system.T1_Consequent;
+import type1.system.T1_Rule;
+import type1.system.T1_Rulebase;
 
 public class WallFollowTuner {
 	// Output
@@ -34,11 +38,17 @@ public class WallFollowTuner {
 
 	public WallFollowTuner() {
 
-		double[][] sampleInput = { { 100, 100, 139, 450 },
-				{ 200, 200, 156, 400 }, { 300, 300, 179, 350 },
-				{ 400, 400, 208, 300 }, { 500, 500, 250, 250 },
-				{ 600, 600, 300, 208 }, { 700, 700, 350, 179 },
-				{ 800, 800, 400, 156 }, { 900, 900, 450, 139 } };
+		double[][] sampleInput = { { 500, 550, 150, 239.05 },
+				{ 500, 540, 150, 221.71 }, { 500, 530, 150, 204.06 },
+				{ 500, 520, 150, 186.17 }, { 500, 510, 150, 168.12 },
+				{ 500, 500, 150, 150 }, { 510, 500, 168.12, 150 },
+				{ 520, 500, 186.17, 150 }, { 530, 500, 204.06, 150 },
+				{ 540, 500, 221.71, 150 }, { 550, 500, 239.05, 150 },
+				{ 500, 450, 239.05, 150 }, { 500, 460, 221.71, 150 },
+				{ 500, 470, 204.06, 150 }, { 500, 480, 186.17, 150 },
+				{ 500, 490, 168.12, 150 }, { 450, 500, 150, 239.05 },
+				{ 460, 500, 150, 221.71 }, { 470, 500, 150, 204.06 },
+				{ 480, 500, 150, 186.17 }, { 490, 500, 150, 168.12 } };
 
 		double overalSum = 99999999;
 		double i1 = 0;
@@ -49,12 +59,13 @@ public class WallFollowTuner {
 
 		double finalLeft = 0;
 		double finalRight = 0;
+
 		for (int i = 0; i < 1000; i = i + 50) {
 			System.out.println(i);
 			for (int j = 0; j < 1000; j = j + 50) {
 				for (int k = 0; k < 1000; k = k + 50) {
 					for (int l = 0; l < 1000; l = l + 50) {
-						if (i < k && j < l) {
+						if (i > k && j > l) {
 							Input front = new Input("Front Sonar", new Tuple(0,
 									1000));
 							Input back = new Input("Back Sonar", new Tuple(0,
@@ -65,16 +76,16 @@ public class WallFollowTuner {
 											i, j });
 							T1MF_Trapezoidal closeUpperMF = new T1MF_Trapezoidal(
 									"Upper MF Close", new double[] { 0.0, 0.0,
-											l, k });
+											k, l });
 							IntervalT2MF_Trapezoidal closeMF = new IntervalT2MF_Trapezoidal(
 									"IT2MF Close", closeUpperMF, closeLowerMF);
 
 							// Membership function - far. Definition
 							T1MF_Trapezoidal farLowerMF = new T1MF_Trapezoidal(
-									"Lower MF Far", new double[] { 500, 850,
+									"Lower MF Far", new double[] { 471, 861,
 											1000, 1000 });
 							T1MF_Trapezoidal farUpperMF = new T1MF_Trapezoidal(
-									"Upper MF Far", new double[] { 150, 350,
+									"Upper MF Far", new double[] { 426, 559,
 											1000, 1000 });
 							IntervalT2MF_Trapezoidal farMF = new IntervalT2MF_Trapezoidal(
 									"IT2MF Far", farUpperMF, farLowerMF);
@@ -94,34 +105,33 @@ public class WallFollowTuner {
 							rightWheelVelocity = new Output(
 									"Right Wheel Velocity", new Tuple(0, 500));
 
-							// Output membership function - low. Definition
 							T1MF_Trapezoidal lowLowerMF = new T1MF_Trapezoidal(
 									"Lower MF Low", new double[] { 0, 0, 0,
-											225.0 });
+											125.0 });
 							T1MF_Trapezoidal lowUpperMF = new T1MF_Trapezoidal(
 									"Upper MF Low", new double[] { 0, 0, 50.0,
-											275.0 });
+											175.0 });
 							IntervalT2MF_Trapezoidal lowMF = new IntervalT2MF_Trapezoidal(
 									"IT2MF Low", lowUpperMF, lowLowerMF);
 
 							// Output membership function - medium. Definition
 							T1MF_Trapezoidal mediumLowerMF = new T1MF_Trapezoidal(
-									"Lower MF Medium", new double[] { 200.0,
-											250.0, 250.0, 300.0 });
+									"Lower MF Medium", new double[] { 50.0,
+											150.0, 150.0, 250.0 });
 							T1MF_Trapezoidal mediumUpperMF = new T1MF_Trapezoidal(
-									"Upper MF Medium", new double[] { 100.0,
-											200.0, 300.0, 400.0 });
+									"Upper MF Medium", new double[] { 0.0,
+											100.0, 200.0, 300.0 });
 							IntervalT2MF_Trapezoidal mediumMF = new IntervalT2MF_Trapezoidal(
 									"IT2MF Medium", mediumUpperMF,
 									mediumLowerMF);
 
 							// Output membership function - high. Definition
-							T1MF_Trapezoidal highLowerMF = new T1MF_Trapezoidal(
-									"Lower MF High", new double[] { 275.0,
-											500.0, 500.0, 500.0 });
 							T1MF_Trapezoidal highUpperMF = new T1MF_Trapezoidal(
-									"Upper MF High", new double[] { 225.0,
-											450.0, 500.0, 500.0 });
+									"Lower MF High", new double[] { 125.0,
+											250.0, 500.0, 500.0 });
+							T1MF_Trapezoidal highLowerMF = new T1MF_Trapezoidal(
+									"Upper MF High", new double[] { 175.0,
+											300.0, 500.0, 500.0 });
 							IntervalT2MF_Trapezoidal highMF = new IntervalT2MF_Trapezoidal(
 									"IT2MF High", highUpperMF, highLowerMF);
 
@@ -144,8 +154,8 @@ public class WallFollowTuner {
 							IT2_Consequent[] rightList = { rightWheelLow,
 									rightWheelMedium, rightWheelHigh };
 
-							// plotMFs("gh", new IntervalT2MF_Interface[]
-							// {closeMF,farMF}, 100);
+							plotMFs("gh", new IntervalT2MF_Interface[] {
+									closeMF, farMF }, 100);
 
 							IT2_Rulebase rulebase = new IT2_Rulebase(4);
 							rulebase.addRule(new IT2_Rule(new IT2_Antecedent[] {
@@ -166,7 +176,7 @@ public class WallFollowTuner {
 
 							double sumLeft = 0;
 							double sumRight = 0;
-							for (int o = 0; o < 9; o++) {
+							for (int o = 0; o < 21; o++) {
 								front.setInput(sampleInput[o][0]);
 								back.setInput(sampleInput[o][1]);
 
@@ -182,8 +192,8 @@ public class WallFollowTuner {
 										+ (Math.pow(rightOutput
 												- sampleInput[o][3], 2));
 							}
-							sumLeft = Math.sqrt(sumLeft / 7);
-							sumRight = Math.sqrt(sumRight / 7);
+							sumLeft = Math.sqrt(sumLeft / 21);
+							sumRight = Math.sqrt(sumRight / 21);
 							if (sumLeft + sumRight < overalSum) {
 								finalLeft = sumLeft;
 								finalRight = sumRight;
@@ -204,6 +214,7 @@ public class WallFollowTuner {
 
 	}
 
+	//from Juzzy
 	private void plotMFs(String name, IntervalT2MF_Interface[] sets,
 			int discretizationLevel) {
 		JMathPlotter plotter = new JMathPlotter();

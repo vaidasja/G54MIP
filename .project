@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>NHFLC</name>
+	<name>HFLC</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -18,7 +18,7 @@
 		<link>
 			<name>lib</name>
 			<type>2</type>
-			<location>/usr/local/Aria/lib</location>
+			<location>C:/usr/local/Aria/lib</location>
 		</link>
 	</linkedResources>
 </projectDescription>
